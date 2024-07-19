@@ -16,10 +16,6 @@
 
           cp -a ${./.}/* ./
 
-          export PATH="${pkgs.just}/bin/:${pkgs.mermaid-cli}/bin/:$PATH"
-            
-          just mermaid-render-all
-
           mkdir -p "$out/share/doc"
           cp *.md "$out/share/doc/"
           cp *.png "$out/share/doc/"

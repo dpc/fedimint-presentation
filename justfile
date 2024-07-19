@@ -1,5 +1,4 @@
 default:
-  just mermaid-render-all
   presenterm presentation.md
 
 mermaid-render-all:
