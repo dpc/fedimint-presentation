@@ -1,5 +1,5 @@
 ---
-title: Fedimint Architecture Overview 
+title: Technical introduction to Fedimint
 sub_title: For Rust-Bitcoin Nashville
 author: dpc (dpc@dpc.pw)
 ---
@@ -128,6 +128,19 @@ Fedimint Modules
 * all client interactions modeled as persistent state machines
 * idempotent steps
 * event log
+* *state machine executor* polling all state machines to completion
+
+
+<!-- end_slide -->
+
+
+`fedimint-client` architecture (state machines)
+===
+
+* all client interactions modeled as persistent state machines
+* idempotent steps
+* event log
+* *state machine executor* polling all state machines to completion
 
 
 <!-- end_slide -->
