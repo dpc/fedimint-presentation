@@ -1,0 +1,23 @@
+%%{init: {"flowchart": {"htmlLabels": false}} }%%
+flowchart LR
+    subgraph ServerSide [Federation]
+        A[Peer1]
+        B[Peer2]
+        C[Peer3]
+        D[Peer4]
+        A --- B
+        A --- C
+        A --- D
+        B --- C
+        B --- D
+        C --- D
+    end
+
+    subgraph ClientSide [Clients]
+        Client
+    end
+
+    Client -.-> A
+    Client -.-> B
+    Client -.-> C
+    Client -.-> D
