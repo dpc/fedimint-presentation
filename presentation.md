@@ -21,7 +21,6 @@ Resources
 
 ![](./fedimint-banner.png)
 
-
 * Github page: <https://github.com/fedimint/fedimint>
 * Fedimint Reference Technical Documentation: <https://docs.fedimint.org>
 * Discord Dev Chat: <https://discord.com/invite/Jq5dE2NhEd>
@@ -38,7 +37,6 @@ Top-level architecture
 
 ![](./top-level.mmd.png)
 
-
 * Client-Server architecture with multiple servers (consensus *Peer*s)
 * Peers run *AlephBFT* consensus
 * Clients communicate with peers in parallel to interact with the Federation
@@ -52,7 +50,6 @@ Top-level architecture
 
 Main threads (`tokio` tasks):
 
-
 * API Server
 * Consensus
 * Per-Peer networking
@@ -64,7 +61,6 @@ Communication between tasks through the database and in-memory channels.
 
 `fedimintd` architecture (database)
 ===
-
 
 * `rocksdb` used on both server and client
 * snapshot level isolation
@@ -82,11 +78,11 @@ Communication between tasks through the database and in-memory channels.
   * `DynModuleConsensusItem` - module specific 
   * other (extensible, e.g. consensus version voting, etc.)
 * `ConsensusItem`s bundled in [`SessionOutcome`s]
+* Redundant and robust by construction
 
 <!-- pause -->
 
 AlephBFT: <https://github.com/aleph-zero-foundation/AlephBFT>
-
 
 <!-- end_slide -->
 
@@ -94,18 +90,18 @@ AlephBFT: <https://github.com/aleph-zero-foundation/AlephBFT>
 `fedimintd` architecture (consensus encoding)
 ===
 
+* fork of `rust-bitcoin`'s `Encodable`
 * schema-less, compact binary encoding
 * supports module-extensible decoding via `Decoder`s in `ModuleDecoderRegistry`
-* fork of `rust-bitcoin`'s `Encodable`
 * `derive` proc-macros 
 
-
 <!-- end_slide -->
+
 
 Fedimint Modules
 ===
 
-* Federation = lightweight *core* + set of *modules*
+* Federation = lightweight *core* + set of supported server side *modules* (`ModuleInitRegistry`)
 * Modules have 2 sides: `ClientModule` and `ServerModule` (with some common shared types)
 * `ClientModuleInit` and `ServerModuleInit` - "constructors"
 * Has own Tx Inputs/Outputs, Consensus Items, APIs endpoints, versioning
@@ -125,23 +121,40 @@ Fedimint Modules
 `fedimint-client` architecture (state machines)
 ===
 
+* client = client *core* + set of supported client side *modules* (`ClientModuleInitRegistry`)
 * all client interactions modeled as persistent state machines
 * idempotent steps
 * event log
 * *state machine executor* polling all state machines to completion
 
-
 <!-- end_slide -->
 
 
-`fedimint-client` architecture (state machines)
+Code overview: `fedimint-server` ("`fedimintd` without modules")
 ===
 
-* all client interactions modeled as persistent state machines
-* idempotent steps
-* event log
-* *state machine executor* polling all state machines to completion
+![](dependency_graph_fedimint-server.png)
+
+<!-- end_slide -->
+
+
+Code overview: fedimintd ("`fedimintd` without modules")
+===
+
+![](dependency_graph_fedimintd.png)
+
+<!-- end_slide -->
+
+
+Code overview: `fedimint-client` (FDK?, "client lib without modules")
+===
+
+![](dependency_graph_fedimint-client.png)
 
 
 <!-- end_slide -->
 
+Code overview: `fedimint-cli` (command line app)
+===
+
+![](dependency_graph_fedimint-cli.png)
