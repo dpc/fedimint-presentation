@@ -28,6 +28,7 @@
       {
         packages = {
           inherit presentation present;
+          default = present;
         };
 
         devShells.default = pkgs.mkShell {
