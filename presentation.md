@@ -65,6 +65,7 @@ Communication between tasks through the database and in-memory channels.
 * `rocksdb` used on both server and client
 * snapshot level isolation
 * rich Rust wrapper logic around raw functionality: `Database`
+* prefix-based partitioning
 
 <!-- end_slide -->
 
@@ -75,10 +76,11 @@ Communication between tasks through the database and in-memory channels.
 * Fedimint consensus - like having own Federated blockchain
 * AlephBFT ("atomic broadcast"): reliably orders `ConsensusItem`s:
   * `Transaction` (bunch of `DynInput`s and `DynOutput`s with a signature)
-  * `DynModuleConsensusItem` - module specific 
+  * `DynModuleConsensusItem` - module specific consensus item
   * other (extensible, e.g. consensus version voting, etc.)
-* `ConsensusItem`s bundled in [`SessionOutcome`s]
-* Redundant and robust by construction
+* `ConsensusItem`s gathered over few minutes into a `SessionOutcome`s, signed over
+  into `SignedSessionOutcome`
+* Naturally redundant and robust
 
 <!-- pause -->
 
@@ -105,15 +107,22 @@ Fedimint Modules
 * Modules have 2 sides: `ClientModule` and `ServerModule` (with some common shared types)
 * `ClientModuleInit` and `ServerModuleInit` - "constructors"
 * Has own Tx Inputs/Outputs, Consensus Items, APIs endpoints, versioning
+* `ModuleKind` (like Unix binary/cmd) vs `ModuleInstanceId` (like Unix PID)
+  * supported kinds added at compile-time
+  * instance composition set during DKG (in the future: allow changing the composition on a running mint)
+* module `Dyn`-types (e.g. `DynInput`, `DynModuleConsensusItem`)
+
+<!-- end_slide -->
+
+
+Fedimint Modules (cont.)
+===
+
 * Standard modules:
   * *mint* - ECash
   * *wallet* - on-chain multisig
   * *ln* and *lnv2* - Fedimint LN Gateway contracts
   * *meta* - metadata consensus module
-* `ModuleKind` (like Unix binary/cmd) vs `ModuleInstanceId` (like Unix PID)
-  * supported kinds added at compile-time
-  * instance composition set during DKG (in the future: allow changing the composition on a running mint)
-* module `Dyn`-types (e.g. `DynInput`, `DynModuleConsensusItem`)
 
 <!-- end_slide -->
 
@@ -138,7 +147,7 @@ Code overview: `fedimint-server` ("`fedimintd` without modules")
 <!-- end_slide -->
 
 
-Code overview: fedimintd ("`fedimintd` without modules")
+Code overview: `fedimintd`
 ===
 
 ![](dependency_graph_fedimintd.png)
@@ -158,3 +167,14 @@ Code overview: `fedimint-cli` (command line app)
 ===
 
 ![](dependency_graph_fedimint-cli.png)
+
+<!-- end_slide -->
+
+Points of Interest
+===
+
+* `devimint` and e2e testing, including component version
+  compat matrix testing and upgrade tests
+* encoding fuzzing
+* Client backups and recovery
+* Nix & elaborated CI
