@@ -42,6 +42,10 @@ Top-level architecture
 * Clients communicate with peers in parallel to interact with the Federation
   * Usually but not always: require `T` of `M` matching responses (`QueryStrategy`)
 
+<!-- pause -->
+
+*Good time to ask questions about high level Fedimint operation.*
+
 <!-- end_slide -->
 
 
@@ -123,6 +127,10 @@ Fedimint Modules (cont.)
   * *wallet* - on-chain multisig
   * *ln* and *lnv2* - Fedimint LN Gateway contracts
   * *meta* - metadata consensus module
+* 3rd party modules (that we know of):
+  * stabilitypool (Fedi)
+  * social recovery (Fedi)
+  * escrow module (Summer of Bitcoin project)
 
 <!-- end_slide -->
 
